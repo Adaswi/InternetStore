@@ -1,9 +1,18 @@
+using InternetStore.Context;
+using InternetStore.Models;
+using InternetStore.Services.IRepositories;
+using InternetStore.Services.Repositories;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddDbContext<InternetStoreContext>(
+        options => options.UseSqlServer("name=ConnectionStrings:InternetStore"));
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
