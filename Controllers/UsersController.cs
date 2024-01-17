@@ -11,6 +11,10 @@ using InternetStore.Services.IRepositories;
 using InternetStore.DTOs;
 using InternetStore.Converters;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 namespace InternetStore.Controllers
 {
@@ -19,13 +23,15 @@ namespace InternetStore.Controllers
     public class UsersController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IConfiguration _configuration;
         private readonly InternetStoreContext _context;
         private readonly UserConverter userConverter = new UserConverter();
 
-        public UsersController(IUnitOfWork unitOfWork, InternetStoreContext context)
+        public UsersController(IUnitOfWork unitOfWork, IConfiguration configuration, InternetStoreContext context)
         {
             _unitOfWork = unitOfWork;
             _context = context;
+            _configuration = configuration;
         }
 
         // GET: api/Users
@@ -55,37 +61,6 @@ namespace InternetStore.Controllers
             }
 
             return user;
-        }
-
-        // PUT: api/Users/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutUser(decimal id, User user)
-        {
-            if (id != user.UserId)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(user).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!UserExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
         }
 
         // POST: api/Users
@@ -143,9 +118,59 @@ namespace InternetStore.Controllers
             return NoContent();
         }
 
-        private bool UserExists(decimal id)
+        [HttpPost("login")]
+        public async Task<ActionResult<TokenDTO>> Login(LoginDTO login)
         {
-            return (_context.Users?.Any(e => e.UserId == id)).GetValueOrDefault();
+            if (login != null && login.UserEmail != null && login.UserPassword != null)
+            {
+              
+                var user = await _unitOfWork.Users.GetUser(login);
+                var passwordHasher = new PasswordHasher<LoginDTO>();
+
+                if (user != null && passwordHasher.VerifyHashedPassword(login, user.UserPassword, login.UserPassword) == PasswordVerificationResult.Success)
+                {
+
+                    //create claims details based on the user information
+                    var claims = new[] {
+                        new Claim("UserId", user.UserId.ToString()),
+                        new Claim("Nickname", user.UserNickname),
+                        new Claim("Name", user.UserName),
+                        new Claim("Surname", user.UserSurname),
+                        new Claim("Email", user.UserEmail)
+                    };
+
+                    var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
+                    var signIn = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+                    var token = new JwtSecurityToken(
+                        _configuration["Jwt:Issuer"],
+                        _configuration["Jwt:Audience"],
+                        claims,
+                        expires: DateTime.UtcNow.AddMinutes(10),
+                        signingCredentials: signIn);
+
+                    UserConverter userConverter = new UserConverter();
+                    var userDTO = userConverter.Convert(user);
+                    userDTO.UserPassword = user.UserId.ToString();
+
+                    TokenDTO tokenDTO = new TokenDTO()
+                    {
+                        Token = new JwtSecurityTokenHandler().WriteToken(token),
+                        User = userDTO,
+                        expiresIn = token.ValidTo
+                   
+                    };
+
+                    return Ok(tokenDTO);
+                }
+                else
+                {
+                    return BadRequest("Invalid credentials");
+                }
+            }
+            else
+            {
+                return BadRequest();
+            }
         }
     }
 }

@@ -6,6 +6,7 @@
         IProductRepository Products { get; }
         ICartRepository Carts { get; }
         IItemRepository Items { get; }
+        ICategoryRepository Categories { get; }
 
         Task CompleteAsync();
     }

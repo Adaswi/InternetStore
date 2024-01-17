@@ -28,11 +28,22 @@ namespace InternetStore.Services.Repositories
                 return false;
             }
         }
-        public async Task<IEnumerable<Item>> GetAllVisibleAsync()
+        public async Task<IEnumerable<Item>> GetAllVisibleByCartAsync(decimal id)
         {
             try
             {
-                return await dbSet.Where(x => x.ItemVisible == true).ToListAsync();
+                return await dbSet.Where(x => (x.ItemVisible == true) && (x.CartId == id)).ToListAsync();
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
+        }
+        public async Task<Item> GetByIdAsync(decimal id)
+        {
+            try
+            {
+                return await dbSet.FindAsync(id);
             }
             catch (Exception e)
             {

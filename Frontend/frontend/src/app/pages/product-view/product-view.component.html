@@ -1,0 +1,31 @@
+<div class="centered-content">
+    <div class="products-container">
+        <h1 class="title has-text-primary">
+            {{title}}
+        </h1>
+        <div class="product-list">
+            <div class="product-item" *ngFor="let product of products">
+                <a href="http://localhost:4200/product/{{product.productId}}">
+                    <p class="product-item-name">{{product.productName}}</p>
+
+                    <div class="product-item-container">
+                        <img class="product-item-image" src="../../../assets/images/logo.png" alt="ProductImage">
+
+                        <div class="product-item-right">
+                            <p class="product-item-price">{{product.productPrice.toFixed(2)}}PLN</p>
+                            <p class="product-item-description">{{product.productDescription}}</p>
+                        </div>
+                    </div>
+                </a>
+                <div class="product-item-bottom">
+                    <a href="http://localhost:4200/category/{{product.categoryName}}">
+                        <p class="product-item-category">{{product.categoryName}}</p>
+                    </a>
+                    <a>
+                        <p class="product-item-owner">{{product.userNickname}}</p>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

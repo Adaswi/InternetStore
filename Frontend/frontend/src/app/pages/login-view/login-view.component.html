@@ -1,0 +1,12 @@
+<div class="centered-content">
+    <form [formGroup]="form" class="container">
+        <label for="email"><b>Email</b></label>
+        <input type="email" formControlName="email" placeholder="Enter Email" id="email" required>
+
+        <label for="psw"><b>Password</b></label>
+        <input type="password" formControlName="password" placeholder="Enter Password" id="psw" required>
+
+        <label class="error">{{error}}</label>
+        <button type="submit" (click)="login()">Login</button>
+    </form>
+</div>

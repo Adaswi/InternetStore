@@ -1,0 +1,86 @@
+@import '../../../main-styles.scss';
+
+.outer-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: fit-content;
+}
+
+.inner-box {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    width: 85%;
+    height: fit-content;
+    background-color: white;
+}
+
+.inner-box>h1 {
+    display: flex;
+    justify-content: center;
+    flex-wrap: nowrap;
+    font-size: 65px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: $primary;
+}
+
+.inner-inner-box {
+    display: flex;
+    flex-direction: row;
+}
+
+.inner-inner-box>section {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    margin: 30px;
+    align-items: center;
+}
+
+.inner-inner-box>section input {
+    display: flex;
+    width: 100%;
+    font-size: larger;
+}
+
+.inner-inner-box>section button {
+    background-color: $primary;
+    color: white;
+    font-size: large;
+    border-radius: 20px;
+    border-color: white;
+    width: 100%;
+}
+
+.low-row a {
+    color: black;
+    font-size: x-large;
+}
+.low-row a:hover {
+    color: $primary;
+}
+
+.low-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 5px;
+}
+
+select {
+    width: 100%;
+    font-size: larger;
+}
+
+.price {
+    font-size: xx-large;
+    color: $primary;
+}
+
+.description {
+    margin-top: 20px;
+}

@@ -1,0 +1,78 @@
+@import '../../main-styles.scss';
+
+header {
+    background-color: whitesmoke;
+    display: flex;
+    justify-content: space-between;
+}
+
+header h1 {
+    font-family: Copperplate, "Copperplate Gothic Light", fantasy;
+    font-size: 200%;
+}
+
+header img {
+    max-height: 50px;
+    max-width: 50px;
+}
+
+header>section,a {
+    display: flex;
+    align-items: center;
+}
+
+body {
+    margin: 0px;
+    padding: 0px;
+}
+
+header button, header input {
+    margin: 8px;
+    padding: 8px;
+    border-radius: 20px;
+    font-size: large;
+}
+
+nav {
+    background-color: $light;
+    display: flex;
+    justify-content: center;
+}
+
+nav ul {
+    display: flex;
+    overflow-x: auto;
+    justify-content: center;
+    width: 80%;
+}
+
+nav ul li {
+    display: inline;
+    font-size: large;
+    color: white;
+    background-color: $turquoise;
+    border-radius: 20px;
+    margin: 8px;
+    padding: 8px;
+
+}
+
+nav ul::-webkit-scrollbar {
+    height: 8px;
+  }
+  
+  /* Track */
+nav ul::-webkit-scrollbar-track {
+    border-radius: 10px; 
+  }
+   
+  /* Handle */
+nav ul::-webkit-scrollbar-thumb {
+    background: $turquoise; 
+    border-radius: 20px;
+    border-top: 2px solid transparent;
+    border-bottom: 2px solid transparent;
+    background-clip: padding-box;  
+  }
+  
+

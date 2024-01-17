@@ -12,6 +12,7 @@ namespace InternetStore.Services.Repositories
         public IProductRepository Products { get; private set; }
         public ICartRepository Carts { get; private set; }
         public IItemRepository Items { get; private set; }
+        public ICategoryRepository Categories { get; private set; }
 
         // constructor will take the context and logger factory as parameters
         public UnitOfWork(InternetStoreContext context)
@@ -22,6 +23,7 @@ namespace InternetStore.Services.Repositories
             Products = new ProductRepository(_context);
             Carts = new CartRepository(_context);
             Items = new ItemRepository(_context);
+            Categories = new CategoryRepository(_context);
 
         }
 

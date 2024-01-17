@@ -3,40 +3,41 @@ using InternetStore.Models;
 
 namespace InternetStore.Converters
 {
-    public class ProductConverter
+    public class ItemConverter
     {
-        public ProductConverter() { }
+        public ItemConverter() { }
 
-        public ProductDTO Convert(Product product)
+        public ItemDTO Convert(Item item)
         {
-            if (product == null)
+            if (item == null)
                 return null;
             else
             {
-                var dto = new ProductDTO()
+                var dto = new ItemDTO()
                 {
-                    ProductId = product.ProductId,
-                    ProductName = product.ProductName,
-                    ProductDescription = product.ProductDescription,
-                    ProductPrice = product.ProductPrice,
-                    ProductQuantity = product.ProductQuantity,
-                    UserNickname = product.User.UserNickname,
-                    CategoryName = product.Category.CategoryName
+                    ItemPrice = item.ItemPrice,
+                    ItemQuantity = item.ItemQuantity,
+                    ItemVisible = item.ItemVisible,
+                    CartId = item.CartId,
+                    OptionId = item.OptionId,
+                    OrderId = item.OrderId,
+                    ProductId = item.ProductId
+
                 };
                 return dto;
             }
         }
 
-        public IEnumerable<ProductDTO> Convert(IEnumerable<Product> products)
+        public IEnumerable<ItemDTO> Convert(IEnumerable<Item> items)
         {
-            if (products == null)
+            if (items == null)
                 return null;
             else
             {
-                var dto = new List<ProductDTO>();
-                foreach (var product in products)
+                var dto = new List<ItemDTO>();
+                foreach (var item in items)
                 {
-                    dto.Add(this.Convert(product));
+                    dto.Add(this.Convert(item));
                 }
                 return dto;
             }

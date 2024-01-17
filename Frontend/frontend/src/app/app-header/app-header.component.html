@@ -1,0 +1,38 @@
+<header>
+    <section>
+        <a href="http://localhost:4200/">
+            <img src="../../assets/images/logo.png">
+            <h1 class="name has-text-primary">InternetStore</h1>
+        </a>
+    </section>
+
+    <section>
+        <input id="input" type="text" placeholder="Search..." (keydown.enter)="Search()">
+        <div *ngIf="readLocalStorageValue('id_token') == null">
+            <button (click)="Login()">
+                Login
+            </button>
+            <button (click)="Register()">
+                Register
+            </button>
+        </div>
+        <div *ngIf="readLocalStorageValue('id_token') != null">
+        <button>
+            Koszyk
+        </button>
+        <button (click)="LogOut()">
+            Wyloguj
+        </button>
+        </div>
+    </section>
+</header>
+
+<nav>
+    <ul>
+        <li *ngFor="let category of categories">
+            <a href="http://localhost:4200/category/{{category.categoryName}}">
+                {{category.categoryName}}
+            </a>
+        </li>
+    </ul>
+</nav>

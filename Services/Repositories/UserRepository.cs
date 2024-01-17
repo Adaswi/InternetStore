@@ -1,4 +1,5 @@
 ﻿using InternetStore.Context;
+using InternetStore.DTOs;
 using InternetStore.Models;
 using InternetStore.Services.IRepositories;
 using Microsoft.EntityFrameworkCore;
@@ -39,6 +40,19 @@ namespace InternetStore.Services.Repositories
             {
                 return false;
             }
+        }
+
+        public async Task<User> GetUser(LoginDTO dto)
+        {
+            try
+            {
+                return await dbSet.Where(x => (x.UserEmail == dto.UserEmail)).FirstOrDefaultAsync();
+            }
+            catch(Exception e)
+            {
+                return null;
+            }
+
         }
     }
 }

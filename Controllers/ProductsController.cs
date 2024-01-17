@@ -57,5 +57,29 @@ namespace InternetStore.Controllers
 
             return Ok(singleProductConverter.Convert(product));
         }
+
+        [HttpGet("Category/{category}")]
+        public async Task<ActionResult<IEnumerable<ProductDTO>>> GetProductsByCategory(string category)
+        {
+            if (_unitOfWork.Products == null)
+            {
+                return NotFound();
+            }
+            var products = productConverter.Convert(await _unitOfWork.Products.GetAllVisibleAsync());
+            products = products.Where(x => x.CategoryName == category);
+            return Ok(products);
+        }
+
+        [HttpGet("Filter/{filter}")]
+        public async Task<ActionResult<IEnumerable<ProductDTO>>> GetProductsByFilter(string filter)
+        {
+            if (_unitOfWork.Products == null)
+            {
+                return NotFound();
+            }
+            var products = productConverter.Convert(await _unitOfWork.Products.GetAllVisibleAsync());
+            products = products.Where(x => x.ProductName.ToLower().Contains(filter.ToLower()));
+            return Ok(products);
+        }
     }
 }

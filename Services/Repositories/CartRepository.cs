@@ -28,5 +28,17 @@ namespace InternetStore.Services.Repositories
                 return false;
             }
         }
+
+        public async Task<Cart> GetCartByUserIdAsync(decimal id)
+        {
+            try
+            {
+                return await dbSet.Where(x => x.UserId == id).FirstOrDefaultAsync();
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
+        }
     }
 }

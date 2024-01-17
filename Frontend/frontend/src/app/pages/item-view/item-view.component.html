@@ -1,0 +1,31 @@
+<div class="outer-box">
+    <div class="inner-box">
+        <h1>
+            {{product.productName}}
+        </h1>
+        <div class="inner-inner-box">
+            <section>
+                <img src="../../../assets/images/logo.png">
+            </section>
+
+            <section>
+                <p class="price">{{product.productPrice.toFixed(2)}}PLN</p>
+                <select *ngIf="product.options != 0" [(ngModel)]="selectedOption">
+                    <option *ngFor="let option of product.options">
+                        {{option.optionName}}
+                    </option>
+                </select>
+                <input type="number" min="1" max={{product.productQuantity}} placeholder="Ilość" [(ngModel)]="selectedQuantity">
+                <button>Kup teraz</button>
+                <button (click)="AddToCart()">Dodaj do koszyka</button>
+                <p class="description">
+                    {{product.productDescription}}
+                </p>
+            </section>
+        </div>
+        <div class="low-row">
+            <a href="http://localhost:4200/category/{{product.categoryName}}">{{product.categoryName}}</a>
+            <a>{{product.userNumber}} {{product.userNickname}}</a>
+        </div>
+    </div>
+</div>

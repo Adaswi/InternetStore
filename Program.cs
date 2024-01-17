@@ -2,7 +2,10 @@ using InternetStore.Context;
 using InternetStore.Models;
 using InternetStore.Services.IRepositories;
 using InternetStore.Services.Repositories;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,8 +16,28 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<InternetStoreContext>(
         options => options.UseSqlServer("name=ConnectionStrings:InternetStore"));
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+{
+    options.RequireHttpsMetadata = false;
+    options.SaveToken = true;
+    options.TokenValidationParameters = new TokenValidationParameters()
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidAudience = builder.Configuration["Jwt:Audience"],
+        ValidIssuer = builder.Configuration["Jwt:Issuer"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+    };
+});
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", builder =>
+        builder.AllowAnyOrigin()
+               .AllowAnyMethod()
+               .AllowAnyHeader());
+});
 
 var app = builder.Build();
 
@@ -30,5 +53,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.UseCors("AllowAll");
 
 app.Run();

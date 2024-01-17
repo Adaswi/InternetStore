@@ -1,0 +1,30 @@
+// This is were we put global styles and change varaible values
+
+@import url('https://fonts.googleapis.com/css?family=Lato:400,700|Nunito:400,700');
+
+$turquoise: #44ddd0;
+$green: #27d7a1;
+
+$light-green: #65d884;
+$dark-green: #56a26c;
+$gradient: linear-gradient(to right top, $turquoise, $green);
+
+$light: #dfe5f3;
+
+$family-sans-serif: "Nunito", sans-serif;
+$primary: $green;
+
+$link: white;
+
+$control-border-width: 2px;
+$input-border-color: transparent;
+$input-shadow: none;
+
+html {
+    background: $gradient;
+}
+
+html, body {
+    min-height: 100%;
+    height: fit-content;
+}
